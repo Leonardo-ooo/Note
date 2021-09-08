@@ -13,5 +13,7 @@ git reset --hard HEAD^ 	//回到上一个版本  HEAD^^上两个版本，HEAD~n�
 git reflog	//查看历史版本id即描述（用于寻找未来版本的id）
 ssh-keygen -t rsa -C "youremail@example.com"	//创建ssh key
 git push -u origin master	//把本地库的所有内容推送到远程库上
+git remote add git@github.com:Leonardo-ooo/StudyNote.git	//关联远程仓库
+
 ```
 
