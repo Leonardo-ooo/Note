@@ -15,5 +15,10 @@ ssh-keygen -t rsa -C "youremail@example.com"	//创建ssh key
 git push -u origin master	//把本地库的所有内容推送到远程库上, 第一次push加上-u
 git remote add origin git@github.com:Leonardo-ooo/StudyNote.git	//关联远程仓库
 git clone gitgit@github.com:Leonardo-ooo/StudyNote.git	//克隆远程仓库
+
+git branch dev
+git checkout dev
+#以上两条指令等价于
+git checkout -b dev		//创建并切换到dev分支
 ```
 
