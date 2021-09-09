@@ -25,5 +25,6 @@ git checkout -b dev		//创建并切换到dev分支
 git switch -c dev	//创建并切换到dev分支
 
 git merge <name>	//合并某分支到当前分支
+git pull //抓取origin仓库合并到本地
 ```
 
