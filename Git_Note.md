@@ -20,5 +20,10 @@ git branch dev
 git checkout dev
 #以上两条指令等价于
 git checkout -b dev		//创建并切换到dev分支
+    
+//还可以使用switch命令切换分支
+git switch -c dev	//创建并切换到dev分支
+
+git merge <name>	//合并某分支到当前分支
 ```
 
