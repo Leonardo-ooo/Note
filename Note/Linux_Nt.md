@@ -6,7 +6,7 @@ Linux Note
 
 ​		
 
-![类Unix系统目录结构](D:\work\Myhub\Picture\类Unix系统目录结构.png)
+![类Unix系统目录结构](D:\work\Myhub\Note\Picture\类Unix系统目录结构.png)
 
 文件信息：
 

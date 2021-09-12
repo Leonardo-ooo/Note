@@ -6,7 +6,7 @@
 
 ​	计算机的两个主要部分：硬件、软件
 
-![计算机系统](D:\work\Myhub\Picture\计算机系统.png)
+![计算机系统](D:\work\Myhub\Note\Picture\计算机系统.png)
 
 ​	
 
