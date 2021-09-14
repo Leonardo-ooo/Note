@@ -193,7 +193,7 @@ s.zfill(self, __with) #0填充右对齐
 
 #===========================================
 s.split(self, sep = None, maxsplit) #以sep为分隔符切割字符串， 若maxsplit有参数则最多切割为maxsplit + 1个子字符串
-s.strip()	#去掉空格
+s.strip()	#去掉两端空格
 #===========================================
 
 s.index(self, sub, __start, __end) #从左至右找子串sub第一次出现的位置，没有则抛出异常
