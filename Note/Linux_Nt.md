@@ -40,6 +40,7 @@ $表示当前权限为一般用户，若为管理员，显示#
 
 ```
 sudo su		//切换到管理员
+alias		//自定义指令别名
 
 查看：
     history		//查看历史指令
@@ -49,6 +50,10 @@ sudo su		//切换到管理员
     cat	<文件>	//直接显示文件信息
     more/less 	//查看文件（和cat相似）
     head/tail	//显示头/尾文件内容，默认显示10行， -n参数指定行数。tail的-f参数能实时显示文件尾的变动
+	man		//帮助手册
+	echo	//显示变量或字符串
+	date 	//查看日期 date +"%Y%m%d"
+	umask	//查看补码， -s文字显示文件权限
 
 操作：
     mkdir		//创建目录，支持同时创建多个目录，用空格分隔。-p 递归的创建多个目录
@@ -84,7 +89,41 @@ sudo su		//切换到管理员
 		-size 			 按大小查找
 		-maxdepth X		 指定查找
 
-	grep [option] dir/file_name	//过滤内容
+	grep [option] dir/file_name		//过滤内容
 		-r	递归子目录
+
+压缩：
+	
+	zip	XX.zip file_name	//压缩文件，-r参数递归子目录压缩整个目录
+	unzip XX.zip	//解压缩
+	
+	gzip/gunzip		//打包单个文件生成.gz文件
+	
+	gz文件习惯用tar打包， tar -zcvf xx.gz <原料>
+		-zxvf参数解压缩
+		其中c表示压缩，x表示解压，z表示压缩方式，v表示显示信息(可省略)
+		还有j的压缩方式，生成.bzip2文件
+	
+	rar a -r newdir dir		//.rar格式压缩， a代表压缩，-r递归子目录，压缩包名（不用加后缀） 原材料
+	rar x 	//解压
+	
+安装软件：
+
+	sudo apt-get update		//	更新/etc/apt/sources.list
+	sudo apt-get install tree	//	安装tree命令
+	sudo apt-get remove tree	//	卸载tree命令
+	sudo apt-get clean		//清理包
+	
+	
+	dpkg根据deb安装包安装软件
+	sudo dpkg -i XXX.deb	//安装
+	sudo dpkg -r XXX.deb	//移除软件包
+	
+	
+	源码安装
+	解压压缩包 -> 进入对应目录执行configure文件 ->	make -> sudo make install安装到系统目录下
+
+	
+		
 ```
 
