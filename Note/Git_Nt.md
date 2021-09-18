@@ -5,6 +5,8 @@ git config --global user.name "Your Name"		//设置用户名
 git config --global user.email "email@example.com"	//设置邮箱
 git init	//初始化当前文件夹，记录文件夹的更改
 git add file_name		//添加文件到仓库缓存区
+git add -A .	//添加所有文件
+git rm -r --cached dir	//删除仓库文件，提交并push后删除远程仓库对应文件
 git commit -m "更改内容描述"	//将缓存区所有文件提交到仓库
 git log		//查看版本情况
 git status	//查看文件修改情况
