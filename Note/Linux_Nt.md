@@ -219,6 +219,7 @@ gcc xx.c -I dir 包含目录， -L包含库目录， -l指定库名
 -lstdc++ 编译cpp文件
 -g 使用gba调试模式
 -Wall 显示所有警告
-ar rcs lib_name.a xx.o xx.o ...	打包生成静态库文件
+ar rcs libxxx.a xx.o xx.o ...	打包生成静态库文件
+
 ```
 
