@@ -195,6 +195,17 @@ alias		//自定义指令别名
 	qall:退出全部文件
 ```
 
+**SHELL脚本**
+
+```
+创建.sh脚本文件
+首行#!/bin/bash表示使用bash来执行脚本
+#后可以写注释
+使用各种shell命令和特定语法结构编写脚本程序
+```
+
+
+
 
 
 **GCC编译流程**
@@ -241,5 +252,11 @@ gcc xx.c -I dir 包含目录
 		方法二：将动态库文件路径配置到$LD_LIBRARY_PATH环境变量下，export(生效一次) LD_LIBRARY_PATH 				=dir:$LD_LIBRARY_PATH
 		
 		(推荐)方法三：将动态库所在目录添加到/etc/ld.so.conf尾行，运行ldconfig指令
+```
+
+
+
+```
+makefile
 ```
 
