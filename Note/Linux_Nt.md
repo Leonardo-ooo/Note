@@ -42,7 +42,9 @@ $表示当前权限为一般用户，若为管理员，显示#
 ```
 sudo su		//切换到管理员
 alias		//自定义指令别名
-
+sudo apt-get install ssh-serve	//安装ssh服务
+ctrl + c	//终止
+ctrl + z 	//挂起
 查看：
     history		//查看历史指令
     ls <目录>	   //查看文件信息， -R 显示文件具体结构
@@ -70,6 +72,7 @@ alias		//自定义指令别名
     unlink	//删除软硬连接，当硬连接计数为0时删除文件
     
     chmod	//改变文件权限， u/g/o/a +/- rwx 参数表示用户/组/其他用户/所有 增加/减少 各种权限
+    		//数字表示法 + filename
 	chown 用户:组 <文件>	//改变文件归属（需要管理员权限）
 
 统计：
@@ -127,7 +130,9 @@ alias		//自定义指令别名
 	解压压缩包 -> 进入对应目录执行configure文件 ->	make -> sudo make install安装到系统目录下
 
 	
-		
+常用复合指令:
+	netstat -apn | grep <port>		查看占用指定网络端口的进程
+	kill -9 <pid>			终止对应进程
 ```
 
 
@@ -254,9 +259,88 @@ gcc xx.c -I dir 包含目录
 		(推荐)方法三：将动态库所在目录添加到/etc/ld.so.conf尾行，运行ldconfig指令
 ```
 
-
+**Makefile**
 
 ```
-makefile
+一次编写，反复使用
+
+命名规则：makefile、Makefile
+
+三要素：目标、依赖、规则命令
+
+默认处理第一个目标
+当依赖文件比目标文件新，则重新递归编译生成目标文件
+规则前加@隐藏指令
+加-指令报错也继续执行
+.PHONY: 目标名 	定义伪目标，防止和目录下文件重名出现冲突
+
+写法:
+
+	目标:依赖
+	制表符	命令
+	
+变量:
+	value = xx.x xx.x xx.x
+	调用: $(value)
+	只能在规则中出现的变量：
+        $@ 		目标
+        $^		所有依赖
+        $<		第一个依赖
+        $?		第一个变化的依赖
+	
+函数:
+	wildcard 进行文件匹配，例: value = $(wildcard *.c)
+	patsubst 替换文件，例： value = $(par subst %.c, %.o, 原料(可以是变量))
+	
+```
+
+**gdb**
+
+```
+gdb调试常用指令:
+	gdb file_name 	启动gdb
+
+    set args <参数> 设置程序参数
+
+    r(un)		运行程序
+
+    start		分布调试，从主函数开始，
+        n(ext)		进行下一步
+        s(tep)		进行下一步，若遇到函数尝试进入
+
+    q(uit)		退出gdb
+
+    list	显示代码段，默认显示十行，默认从主函数所在文件开始 <file_name:行数> 指定文件
+
+    b(reak) 
+        <行数>	在主函数所在文件目标行设置断点
+        <function_name>		在目标函数设置断点
+        <文件名:行数>	在目标文件的目标行设置断点
+
+    i(nfo) b(reak)	查看断点
+
+    d(el) 断点编号	删除指定断点
+
+    c(ontinue)	跳到下一个断点
+
+    p(rint) 变量		查看变量
+        ptype 变量		查看变量类型
+        
+       
+gdb跟踪core文件：
+	
+	ulimit -c	查看core文件大小	unlimited选项不限制core文件大小
+	
+	gdb <程序名> core 使用core文件
+	
+	where 查看错误位置
+	
+修改core文件配置： /proc/sys/kernel/core_pattern
+```
+
+**Linux信号**
+
+```
+signal信号是进程之间相互传递消息的一种方法，信号全称为软中断信号，也有人称作软中断，从它的命名可以看出，它的实质和使用很象中断。
 ```
 
