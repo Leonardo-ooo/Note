@@ -1,0 +1,11 @@
+
+
+/*back to top*/
+.b-rightfix{width:58px;padding-top:28px;background:url(fix-icon.png) 0 -160px no-repeat;transition: bottom ease .3s;position:fixed;right:13px;bottom:80px;z-index:400;display:block;}
+.b-rightfix a{ float:left;width:58px;padding-top:28px;line-height:30px;text-align:center;font-family:'Simsun';color:#f7e3e4; font-size:12px;border-bottom:1px #fff solid;background:url(fix-icon.png) 0 0 no-repeat #1c84c6;}
+.b-rightfix a.bqq{ background-position:16px -98px;}
+.b-rightfix a.bfdback{ background-position:18px 10px;}
+.b-rightfix a.bbacktop{ background-position: 22px -45px;background-color:#333;border:none;}
+.b-rightfix a:hover{color:#fff;background-color:#1c84c6;text-decoration:none;}
+
+.b-rightfix a.checkF{ background-position:18px 10px;}

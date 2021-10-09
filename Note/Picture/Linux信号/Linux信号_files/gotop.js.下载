@@ -1,0 +1,61 @@
+//javascript Document
+
+$(function(){
+
+	$(window).scroll(function(){
+		  var scrollt = document.documentElement.scrollTop + document.body.scrollTop; 
+		  console.log(scrollt);
+		  if( scrollt >350 ){ 
+		    $(".bbacktop").fadeIn(400);
+		  }else{      
+		    $(".bbacktop").stop().fadeOut(500); 
+		  }
+    });
+	
+	
+	$(".bbacktop").click(function(){
+	    $("html,body").animate({scrollTop:"0px"},400);
+	});
+	
+});
+
+function SuCaiJiaYuan(){
+	this.init();
+}
+SuCaiJiaYuan.prototype = {
+	constructor: SuCaiJiaYuan,
+	init: function(){		
+		this._initBackTop();
+	},	
+	_initBackTop: function(){
+		var $backTop = this.$backTop = $('<div class="b-rightfix">'+
+				'<a class="bbacktop" href="javascript:void(0);">'+
+					'返回顶部'+
+				'</a>'+
+			'</div>');
+		$('body').append($backTop);
+		
+		$backTop.click(function(){
+			$("html, body").animate({
+				scrollTop: 0
+			}, 120);
+		});
+		var timmer = null;
+		$(window).bind("scroll",function() {
+            var d = $(document).scrollTop(),
+            e = $(window).height();
+            500 < d ? $backTop.css("bottom", "10px") : $backTop.css("bottom", "-60px");/**/
+			clearTimeout(timmer);
+			timmer = setTimeout(function() {
+                clearTimeout(timmer)
+            },100);
+	   });
+		
+
+	}
+	
+}
+
+var SuCaiJiaYuan= new SuCaiJiaYuan();
+
+	

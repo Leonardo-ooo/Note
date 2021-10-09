@@ -1,0 +1,64 @@
+$.ajaxSetup({
+  async: false
+});
+
+var detailVue = new Vue({
+			el : '#detailVue',
+			data : {
+				infoId:"",
+				title:""
+			},
+			methods : {
+				modifyInfoClickNumFun:function(){
+					var self = this;
+					$.ajax( {
+						url : '../info/ns/modifyInfoClickNum.action',
+						async : false,
+						data : {"infoId":self.infoId},
+						type : 'get',
+						dataType : 'json',
+						success : function(result) {
+							if(result){}
+						}
+					});
+				},
+				mpSaveLogFun:function(){//记录日志
+					var self = this;
+					$.ajax( {
+						url : '../log/ns/mpSaveLog.action',
+						async : false,
+						data : {"funcName":"内容页:"+self.title,"actType":8},
+						type : 'post',
+						dataType : 'json',
+						success : function(result) {
+						}
+					});
+				},
+				getInfoId:function(){
+					var url = window.location.href;
+					var urlArr = url.split('?');
+					var k = urlArr[0];
+					var appU = k.split('/');
+					console.log(k);
+					console.log(appU);
+					var pageName = appU[appU.length - 1];
+					pageName = pageName.substring(0,pageName.length-5);
+					
+					this.infoId = pageName;
+					console.log(pageName);
+				}
+			},
+			created : function() {// 实例创建完成
+				//this.getInfoId();
+				this.infoId = $("#infoId").val();
+				this.title = $("#title").val();
+
+				console.log(this.infoId);
+				console.log(this.title);
+				this.modifyInfoClickNumFun();
+				this.mpSaveLogFun();
+			},
+			mounted : function() {
+			}
+});
+
