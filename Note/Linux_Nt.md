@@ -138,6 +138,12 @@ ctrl + z 	//挂起
 	源码安装
 	解压压缩包 -> 进入对应目录执行configure文件 ->	make -> sudo make install安装到系统目录下
 
+防火墙
+	
+	Ubuntu:
+		ufw status		查看防火墙状态
+		ufw allow <port>	开放对应端口
+		
 	
 常用复合指令:
 	netstat -apn | grep <port>		查看占用指定网络端口的进程
@@ -199,6 +205,7 @@ ctrl + z 	//挂起
 	
 	: 进入该模式
 	!+ shell指令 可以执行对应指令
+	/xxx	从前往后查找xxx， n查找下一个，N查找上一个，	?xxx从后往前查找
 	s/xxx/xx/ 将当前行第一个匹配的xxx替换为xx， +g替换整行
 	%s/xxx/xx/ 将每一行第一个匹配的xxx替换为xx， +g替换整行
 	w	写入(保存)
@@ -497,5 +504,47 @@ signal库函数
 		fork函数用于产生一个新的进程，函数返回值pid_t是一个整数，在父进程中，返回值是子进程编号，在子进程		 中，返回值是0。
 	
 		fork函数创建了一个新的进程，新进程（子进程）与原有的进程（父进程）一模一样。子进程和父进程使用相同的		代码段；子进程拷贝了父进程的堆栈段和数据段。子进程一旦开始运行，它复制了父进程的一切数据，然后各自运		  行，相互之间没有影响。父进程结束后子进程交由系统托管。
+	
+	int kill(pid_t pid, int sig);
+		用来送参数sig 指定的信号给参数pid 指定的进程。参数pid 有几种情况：
+            1、pid>0 将信号传给进程识别码为pid 的进程.
+            2、pid=0 将信号传给和目前进程相同进程组的所有进程
+            3、pid=-1 将信号广播传送给系统内所有的进程
+            4、pid<0 将信号传给进程组识别码为pid 绝对值的所有进程参数
+            
+            
+```
+
+**linux多线程**
+
+```
+#include<pthread.h>
+
+	int pthread_create(pthread_t *thread,
+                       const pthread_attr_t *attr,
+                       void *(*start_routine) (void *),
+                       void *arg);
+                       
+	pthread_t *thread：
+		传递一个 pthread_t 类型的指针变量，也可以直接传递某个 pthread_t 类型变量的地址。pthread_t 是		  一种用于表示线程的数据类型，每一个 pthread_t 类型的变量都可以表示一个线程。
+	
+	const pthread_attr_t *attr：
+		用于手动设置新建线程的属性，例如线程的调用策略、线程所能使用的栈内存的大小等。大部分场景中，我们都不		  需要手动修改线程的属性，将attr参数赋值为NULL，pthread_create()函数会采用系统默认的值创建线程
+	
+	 void *(*start_routine) (void *)：
+	 	以函数指针的方式指明新建线程需要执行的函数，该函数的参数最多有 1 个（可以省略不写），形参和返回值的			类型都必须为 void* 类型。void* 类型又称空指针类型，表明指针所指数据的类型是未知的。使用此类型指针		   时，我们通常需要先对其进行强制类型转换，然后才能正常访问指针指向的数据。
+		如果该函数有返回值，则线程执行完函数后，函数的返回值可以由 pthread_join() 函数接收。
+	
+	void *arg：
+		指定传递给 start_routine 函数的实参，当不需要传递任何数据时，将 arg 赋值为 NULL 即可。
+		
+	如果成功创建线程，pthread_create() 函数返回数字 0，反之返回非零值。各个非零值都对应着不同的宏，指明创建失败的原因，常见的宏有以下几种：
+	EAGAIN：系统资源不足，无法提供创建线程所需的资源。
+	EINVAL：传递给 pthread_create() 函数的 attr 参数无效。
+	EPERM：传递给 pthread_create()函数的attr参数中，某些属性的设置为非法操作，程序没有相关的设置权限。
+	
+	以上这些宏都声明在 <errno.h> 头文件中，如果程序中想使用这些宏，需提前引入此头文件。
+	
+	
 ```
 
