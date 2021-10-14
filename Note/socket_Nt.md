@@ -122,7 +122,7 @@ socket提供了流（stream）和数据报（datagram）两种通信机制，即
 	
 6.网络I/O操作相关函数
     •read()/write() 
-    •recv()/send() 
+    •recv()/send() 	//SOCKET s,  char *buf, int len,int flags(常用零)
     •readv()/writev() 
     •recvmsg()/sendmsg() 
     •recvfrom()/sendto()
@@ -205,6 +205,25 @@ int inet_aton(const char *cp, struct in_addr *inp);
 	client/server间需要多次通信，通信的频率和次数不确定，所以client和server需要保持这个连接，常用的方法	  就是心跳机制。
 	
 	根据不同的应用场景采用不同的策略，没有十全十美的选择，只有合适的选择
+
+```
+
+
+
+**性能测试**
+
+```
+并发性能
+
+```
+
+
+
+**I/O复用**
+
+```
+select
+
 
 ```
 

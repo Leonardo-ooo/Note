@@ -57,7 +57,7 @@ ctrl + z 	//挂起
 	echo	//显示变量或字符串
 	date 	//查看日期 date +"%Y%m%d"
 	umask	//查看补码， -s文字显示文件权限
-	ps		//查看当前终端进程， -ef查看全部系统进程
+	ps		//查看当前终端进程， -ef查看全部系统进程， -xH查看所有线程
 		UID    ：启动进程的操作系统用户。
         PID    ：进程编号。
         PPID   ：进程的父进程的编号。
@@ -377,7 +377,7 @@ signal库函数
 	signal库函数可以设置程序对信号的处理方式。
 
 	函数声明：
-	sighandler_t signal(int signum, sighandler_t handler);
+	sighandler_t signal(int signum, void(*sighandler_t)(int) handler);
 		参数signum表示信号的编号。
 
 		参数handler表示信号的处理方式，有三种情况：
@@ -538,13 +538,85 @@ signal库函数
 	void *arg：
 		指定传递给 start_routine 函数的实参，当不需要传递任何数据时，将 arg 赋值为 NULL 即可。
 		
-	如果成功创建线程，pthread_create() 函数返回数字 0，反之返回非零值。各个非零值都对应着不同的宏，指明创建失败的原因，常见的宏有以下几种：
+		如果成功创建线程，pthread_create() 函数返回数字 0，反之返回非零值。各个非零值都对应着不同的宏，	 指明创建失败的原因，常见的宏有以下几种：
+		
 	EAGAIN：系统资源不足，无法提供创建线程所需的资源。
 	EINVAL：传递给 pthread_create() 函数的 attr 参数无效。
 	EPERM：传递给 pthread_create()函数的attr参数中，某些属性的设置为非法操作，程序没有相关的设置权限。
 	
 	以上这些宏都声明在 <errno.h> 头文件中，如果程序中想使用这些宏，需提前引入此头文件。
 	
+	int pthread_join(pthread_t thread, void **value_ptr);	阻塞主线程等待对应子线程退出。
+        thread：等待退出线程的线程号。
+        value_ptr：退出线程的返回状态。
+       
+线程的终止：
+
+	1.代码运行完成自动消亡,线程状态返回值为15
+	2.return void* <返回状态>
+	2.void pthread_exit(void *retval);	
+	3.被主线程或其他线程终止
+	
+线程资源的回收：
+	
+		线程有joinable和unjoinable两种状态，前者当线程终止时不会释放资源，这种线程称为僵尸线程。后者终止	 时会由系统自动释放资源
+	
+	线程资源的回收有四种方法：
+	
+		1.调用pthread_join()方法，会产生阻塞因此一般不适用
+		
+		2.创建线程前调用pthread_attr_setdetachstate将线程设置为detached，该线程退出时由系统回收资源
+			pthread_attr_t attr;
+			pthread_attr_init(&attr);
+			pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+			pthread_create(&pthid, &attr, pth_main, arg);
+		
+        3.创建线程后，调用pthread_detach()将对应线程设置为detached状态
+        	pthread_detach(pthid);
+		
+		4.创建线程后，在该线程里调用pthread_detach将自身设置为detach状态
+			pthread_detach(pthread_self());
+			
+线程的取消：
+
+	int pthread_cancel(pthread_t thread);
+	取消后线程状态返回-1(PTHREAD_CANCELED)；
+	
+	子线程可以调用pthread_setcancelstate()设置响应pthread_cancel()的方式
+		
+		int pthread_setcancelstate(int state, int *oldstate);
+			oldstate用于保存旧参数，可以缺省
+			默认state为PTHREAD_CANCEL_ENABLE,改为PTHREAD_CANCEL_DISABLE则cancel不生效
+	
+	调用pthread_setcanceltype来设定线程取消的方式： 
+               pthread_setcanceltype (PTHREAD_CANCEL_ASYNCHRONOUS, NULL); //异步取消、 
+               pthread_setcanceltype (PTHREAD_CANCEL_DEFERRED, NULL); //同步取消、 
+               pthread_setcanceltype (PTHREAD_CANCEL_DISABLE, NULL);//不能取消 
+	
+线程清理：
+	
+	终止线程前可能需要完成善后工作
+	
+	void pthread_cleanup_push(*void(*routine)(void*), void *arg);
+		将对应函数压入清理函数栈
+	
+	void pthread_cleanup_pop(int execute);
+		execute为0则只弹出函数，不执行；非零则弹出并执行函数
+		线程被cancel或遇到pthread_exit()会执行所有清理函数
+		
+	清理函数必须成对出现在线程中，否则会报错
+	
+线程和信号：
+
+	向子线程发送信号用int pthread_kill(pthread_t thread, int sig); 
+	
+	异常产生的信号（比如程序错误，像SIGPIPE、SIGEGV这些），则只有产生异常的线程收到并处理。
+	
+	用pthread_kill产生的内部信号，则只有pthread_kill参数中指定的目标线程收到并处理。
+	
+	外部使用kill命令产生的信号，通常是SIGINT、SIGHUP等job control信号，则会遍历所有线程，直到找到一个不	   阻塞该信号的线程，然后调用它来处理。(一般从主线程找起)，注意只有一个线程能收到。
+　　
+　　其次，每个线程都有自己独立的signal mask，但所有线程共享进程的signal action。这意味着，你可以在线程中	调用pthread_sigmask(不是sigmask)来决定本线程阻塞哪些信号。但你不能调用sigaction来指定单个线程的信	号处理方式。如果在某个线程中调用了sigaction处理某个信号，那么这个进程中的未阻塞这个信号的线程在收到这个信	号都会按同一种方式处理这个信号。另外，注意子线程的mask是会从主线程继承而来的。
 	
 ```
 
