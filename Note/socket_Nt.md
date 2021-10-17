@@ -123,6 +123,8 @@ socket提供了流（stream）和数据报（datagram）两种通信机制，即
 6.网络I/O操作相关函数
     •read()/write() 
     •recv()/send() 	//SOCKET s,  char *buf, int len,int flags(常用零)
+    	recv() 失败返回-1,sockfd被关闭返回0
+    	send() 失败返回-1
     •readv()/writev() 
     •recvmsg()/sendmsg() 
     •recvfrom()/sendto()
@@ -224,6 +226,21 @@ int inet_aton(const char *cp, struct in_addr *inp);
 ```
 select
 
+	int select(int maxfdp, fd_set* readfds, fd_set* writefds, fd_set* errorfds, struct timeval* timeout);
+	
+	maxfdp: 当前最大的文件描述符还要+1
+	readfds：有读入事件的sockfd
+	writefds：有写入事件的sockfd，一般填空
+	errorfds：有异常的文件集合，一般填空
+	timeout：超时
+	成功返回发生事件的个数，超时返回0， -1表示失败
+	
+	fd_set 是一种 bitmap 当前sockfd的集合，用位图的方式记录，大小默认为1024
+	
+	FD_ZERO(&readfdset);		初始化结构体
+	FD_SET(sockfd, &fdset);		把sockfd加入集合
+	FD_ISSET(sockfd, &fdset);	判断sockfd是否在集合中
+	FD_CLR(eventfd, &fdset);	把sockfd移除出集合
 
 ```
 
