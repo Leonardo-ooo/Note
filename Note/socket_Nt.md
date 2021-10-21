@@ -242,5 +242,72 @@ select
 	FD_ISSET(sockfd, &fdset);	判断sockfd是否在集合中
 	FD_CLR(eventfd, &fdset);	把sockfd移除出集合
 
+poll
+
+	poll与select类似，将文件sock存于数组中在用户和内核空间反复拷贝，但poll的sock数量没有限制
+	
+	int poll(struct pollfd *fds, nfds_t nfds, int timeout);
+		等待事件的产生，类似于select()调用。该函数返回需要处理的事件数目，如返回0表示已超时。
+		fds:存储sock的数组
+		nfds:有效sock的个数
+		timeout:超时限制，毫秒， -1永久阻塞
+		
+	struct pollfd{
+		int fd;
+		short events;		//设置监听事件类型
+		short revents;		//返回事件
+	};
+	
+	POLLIN
+	
+epoll
+
+	1.创建epoll句柄
+		int epoll_create(int size);
+			
+			size:监听的数目最大有多大，从Linux 2.6.8开始，max_size参数将被忽略，但必须大于零。
+		
+	2.注册监听事件类型
+		int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+			epfd: epoll句柄
+			
+			op:动作，用三个宏表示:
+				EPOLL_CTL_ADD(注册新的fd到epfd中),
+				EPOLL_CTL_MOD(修改已经注册的fd的监听事件),
+				EPOLL_CTL_DEL(从epfd中删除一个fd)
+				
+			fd:需要监听的fd
+			
+			*event :需要监听什么事
+			
+		struct epoll_event {
+        	__uint32_t events; /* Epoll events */
+        	epoll_data_t data; /* User data variable */
+    	};
+    	
+    	typedef union epoll_data {
+            void *ptr;
+            int fd;
+            __uint32_t u32;
+            __uint64_t u64;
+        } epoll_data_t;
+        
+        结构体里的events可以是以下几个宏的集合：
+        
+        EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
+        EPOLLOUT：表示对应的文件描述符可以写；
+        EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
+        EPOLLERR：表示对应的文件描述符发生错误；
+        EPOLLHUP：表示对应的文件描述符被挂断；
+        EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，相对于水平触发(Level Triggered)
+        EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把					   这个socket加入到EPOLL队列里
+        
+        3.int epoll_wait(int epfd,struct epoll_event *events,int maxevents, int timeout)
+			等待事件的产生，类似于select()调用。该函数返回需要处理的事件数目，如返回0表示已超时，-1失败。
+			
+			epfd : 		 epoll句柄
+			events：		用来从内核得到事件的集合
+			maxevents：返回事件组的最大数量，不能大于epoll_create()时的size，超过的事件在下次返回
+			timeout：	超时限制，毫秒， -1永久阻塞
 ```
 
