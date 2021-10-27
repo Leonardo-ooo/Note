@@ -309,5 +309,8 @@ epoll
 			events：		用来从内核得到事件的集合
 			maxevents：返回事件组的最大数量，不能大于epoll_create()时的size，超过的事件在下次返回
 			timeout：	超时限制，毫秒， -1永久阻塞
+			
+		水平触发和边缘触发：
+		
 ```
 
