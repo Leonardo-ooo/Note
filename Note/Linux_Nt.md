@@ -157,6 +157,9 @@ ctrl + z 	//挂起
 **Vim的使用**
 
 ```
+在用户家目录(/home/用户名)下面有一个.vimrc
+/etc下面也有一个vimrc
+
 命令模式：
 	ctrl s:暂停
 	ctrl q:退出暂停

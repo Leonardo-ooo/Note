@@ -6,10 +6,13 @@
 typedef pair<int, int> PII;
 
 int n;      // 点的数量
-int h[N], w[N], e[N], ne[N], idx;       // 邻接表存储所有边
+int h[N], w[N], e[N], ne[N], idx = 1;       // 邻接表存储所有边
 int dist[N];        // 存储所有点到1号点的距离
 bool st[N];     // 存储每个点的最短距离是否已确定
 
+void add(int u, int v, int d){
+    e[idx] = v, w[idx] = d, ne[idx] = h[u], h[u] = idx++;
+}
 // 求1号点到n号点的最短距离，如果不存在，则返回-1
 int dijkstra()
 {
@@ -28,7 +31,7 @@ int dijkstra()
         if (st[ver]) continue;
         st[ver] = true;
 
-        for (int i = h[ver]; i != -1; i = ne[i])
+        for (int i = h[ver]; i ; i = ne[i])
         {
             int j = e[i];
             if (dist[j] > distance + w[i])
