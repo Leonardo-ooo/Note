@@ -6,7 +6,7 @@ Linux Note
 
 ​		
 
-![类Unix系统目录结构](D:\work\Myhub\Note\Picture\类Unix系统目录结构.png)
+![类Unix系统目录结构](D:\work\Note_git\Note\Picture\类Unix系统目录结构.png)
 
 文件信息：
 
@@ -59,6 +59,8 @@ ctrl + z 	//挂起
 	umask	//查看补码， -s文字显示文件权限
 	free	//查看内存占用
 	top		//查看CPU占用率
+	df		//查看硬盘占用和挂载点
+	lsblk	//查看块设备
 	ps		//查看当前终端进程， -ef查看全部系统进程， -xH查看所有线程
 		UID    ：启动进程的操作系统用户。
         PID    ：进程编号。
