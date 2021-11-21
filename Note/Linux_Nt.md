@@ -61,6 +61,8 @@ ctrl + z 	//挂起
 	top		//查看CPU占用率
 	df		//查看硬盘占用和挂载点
 	lsblk	//查看块设备
+	netstat 查看端口
+		-ant	查看所有被占用端口
 	ps		//查看当前终端进程， -ef查看全部系统进程， -xH查看所有线程
 		UID    ：启动进程的操作系统用户。
         PID    ：进程编号。
@@ -83,6 +85,7 @@ ctrl + z 	//挂起
     
     ln <文件1> <文件2>	//创建文件2连接到文件1， -s参数创建软连接
     unlink	//删除软硬连接，当硬连接计数为0时删除文件
+    ldd 	//查看依赖
     
     chmod	//改变文件权限， u/g/o/a +/- rwx 参数表示用户/组/其他用户/所有 增加/减少 各种权限
     		//数字表示法 + filename
@@ -91,7 +94,6 @@ ctrl + z 	//挂起
 统计：
     wc	//文件统计， 显示文件的行数，单词数，字节数， 可用-l、-w、-c分别显示
     du	//查看目录占用空间，-h参数显示适合人类观看格式， --max-depth=x 参数设置显示目录深度
-    df	//查看当前文件系统使用情况
 ```
 
 **高级指令**
@@ -138,6 +140,11 @@ ctrl + z 	//挂起
 	sudo dpkg -i XXX.deb	//安装
 	sudo dpkg -r XXX.deb	//移除软件包
 	
+	rpm命令
+		--prefix<目的目录>		指定安装目录
+		-ivh	常用安装参数，i显示套件相关信息，v显示指令执行过程，h列出标记
+		rpm -e 软件名			卸载软件
+	
 	
 	源码安装
 	解压压缩包 -> 进入对应目录执行configure文件 ->	make -> sudo make install安装到系统目录下
@@ -147,6 +154,17 @@ ctrl + z 	//挂起
 	Ubuntu:
 		ufw status		查看防火墙状态
 		ufw allow <port>	开放对应端口
+	
+	centos7:
+		firewall-cmd --list-ports	查看开放端口
+		
+		firewall-cmd --zone=public(作用域) --add-port=80/tcp(端口和访问类型) 				--permanent(永久生效)		
+		
+		firewall-cmd --zone= public --remove-port=80/tcp --permanent
+		
+		firewall-cmd --reload		重启
+		
+		systemctl stop firewalld.service 关闭防火墙
 		
 	
 常用复合指令:

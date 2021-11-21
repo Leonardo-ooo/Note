@@ -9,10 +9,7 @@ mysql.h 位置 /usr/include/mysql/
 静态库位置/usr/lib/mysql/
 
 ```
-shell 指令
 
-	service mysql start			//启动mysql服务， restart重启服务， stop停止服务
-	mysql -V/version			//查看mysql版本
 
 ```
 
